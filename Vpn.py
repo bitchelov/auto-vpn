@@ -11,7 +11,7 @@ import json
 caps = DesiredCapabilities.INTERNETEXPLORER
 caps['ignoreProtectedModeSettings'] = True
 driver = webdriver.Ie(os.getcwd() + "\\IEDriverServer.exe", capabilities=caps)
-#driver.implicitly_wait(10) # seconds
+driver.implicitly_wait(10) # seconds
 wait = WebDriverWait(driver, 10)
 
 
@@ -26,34 +26,22 @@ password.clear()
 password.send_keys(data["login_data"]["password"])
 # Login
 driver.find_element_by_id("LoginButton").click()
-time.sleep(3)
 driver.switch_to_window(driver.window_handles[1])
-time.sleep(2)
 connectionStatus = driver.find_element_by_id("displayStatus")
-# doesnt work
-
-# wait.until(EC.text_to_be_present_in_element(By.ID, 'displayStatus'), 'Подключено')
-# wait.until(EC.text_to_be_present_in_element_value(connectionStatus, "Подключено")
-# driver.close()
-
 # new version
-while(connectionStatus.text != " Подключено"):
+while(connectionStatus.text != "Подключено"):
     time.sleep(1)
 print(connectionStatus.text)
-driver.close()
+while (os.system("ping -n 1 " + data["hostname"]) == 0):
+    # print (data["hostname"] + 'is up!')
+    pass
+else:
+    # print (data["hostname"] + 'is down!')
+    #unexpected action with second window(popup)
+    driver.switch_to_window(driver.window_handles[0])
+    driver.close()
+    # driver.quit()
 
-
-
-# while (os.system("ping -n 6 " + data["hostname"]) == 0):
-#     print (hostname + 'is up!')
-# else:
-#     print (hostname + 'is down!')
-#     driver.close()
-#     driver.close()
-#
-
-#
-#driver.find_element_by_id("overridelink").click()
-
+# driver.find_element_by_id("overridelink").click()
 
 #pyinstaller --onefile Vpn.py
