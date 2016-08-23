@@ -32,18 +32,9 @@ while True:
 	errors = 0
 	while errors < 3:
 		while (os.system("ping -n 1 " + data["hostname"]) == 0):
-		    # print (data["hostname"] + 'is up!')
 		    time.sleep(10)
 		    errors = 0
 		else:
-		    # print (data["hostname"] + 'is down!')
-		    #unexpected action with second window(popup)
-		    # driver.switch_to_window(driver.window_handles[0])
-		    # driver.close()
 		    errors = errors + 1
 	else:
 	    driver.quit()
-
-	# driver.find_element_by_id("overridelink").click()
-
-	#pyinstaller --onefile Vpn.py
